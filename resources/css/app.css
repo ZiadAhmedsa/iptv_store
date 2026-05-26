@@ -1,0 +1,32 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-primary: #D4AF37;
+    --color-primary-dark: #C5A059;
+    --color-bg-dark: #0a0a0a;
+    --color-bg-card: #1a1a1a;
+    --color-text-main: #f3f4f6;
+    --color-text-muted: #9ca3af;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.luxury-gradient {
+    background: linear-gradient(135deg, #2b2b2b 0%, #0a0a0a 100%);
+}
+
+.luxury-border {
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.luxury-text-gradient {
+    background: linear-gradient(to right, #D4AF37, #FBF5B7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-gradient {
+    background: linear-gradient(135deg, #6366f1, #4338ca);
+}
+
+@tailwind components;
+@tailwind utilities;

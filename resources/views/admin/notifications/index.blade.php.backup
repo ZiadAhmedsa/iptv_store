@@ -1,0 +1,89 @@
+@extends('layouts.admin')
+
+@section('title', 'مركز التواصل الذكي')
+@section('subtitle', 'إرسال رسائل WhatsApp وبريد إلكتروني احترافي للعملاء')
+
+@section('content')
+<div class="grid gap-8 mb-8">
+    <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-200 dark:border-slate-800 shadow-xl">
+        <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mb-6">تفاصيل الإشعارات</h3>
+        <div class="grid gap-6 lg:grid-cols-2">
+            <div class="rounded-3xl border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-950/70">
+                <p class="text-sm text-slate-500 mb-4">طلبات المنتجات المعلقة</p>
+                @forelse($pendingOrders as $order)
+                    <div class="mb-4 last:mb-0 p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center justify-between gap-3 mb-2">
+                            <span class="font-bold text-slate-900 dark:text-white">#{{ $order->order_number ?? $order->id }}</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">{{ $order->created_at->format('Y-m-d') }}</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">العميل: {{ $order->user->name ?? 'غير معروف' }}</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">البريد: {{ $order->user->email ?? 'غير متوفر' }}</p>
+                    </div>
+                @empty
+                    <p class="text-slate-500">لا توجد طلبات جديدة حالياً.</p>
+                @endforelse
+            </div>
+
+            <div class="rounded-3xl border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-950/70">
+                <p class="text-sm text-slate-500 mb-4">طلبات الاشتراك المجاني</p>
+                @forelse($pendingSubscriptionRequests as $claim)
+                    <div class="mb-4 last:mb-0 p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center justify-between gap-3 mb-2">
+                            <span class="font-bold text-slate-900 dark:text-white">{{ $claim->user->email ?? 'مستخدم محذوف' }}</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">{{ optional($claim->claimed_at)->format('Y-m-d') }}</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">الخطة: {{ $claim->plan->title ?? 'طلب اشتراك مجاني' }}</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">MAC: {{ $claim->mac_address }}</p>
+                    </div>
+                @empty
+                    <p class="text-slate-500">لا توجد طلبات اشتراك مجاني جديدة.</p>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 border border-slate-200 dark:border-slate-800 shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
+            <i class="ph ph-envelope-simple text-[8rem] text-blue-500"></i>
+        </div>
+
+        <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mb-8 flex items-center gap-3 relative z-10">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <i class="ph ph-envelope-simple text-blue-500"></i>
+            </div>
+            تواصل عبر البريد الإلكتروني
+        </h3>
+
+        <form action="{{ route('admin.send.email') }}" method="POST" class="space-y-6 relative z-10">
+            @csrf
+            <div>
+                <label class="block font-bold text-slate-500 text-xs uppercase tracking-widest mb-3 ml-2">البريد الإلكتروني للعميل</label>
+                <input type="email" name="email" placeholder="customer@example.com" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-blue-500 transition outline-none" required>
+            </div>
+
+            <div>
+                <label class="block font-bold text-slate-500 text-xs uppercase tracking-widest mb-3 ml-2">موضوع الرسالة</label>
+                <input type="text" name="subject" placeholder="مثلاً: تفاصيل اشتراكك الجديد" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-blue-500 transition outline-none" required>
+            </div>
+
+            <div>
+                <label class="block font-bold text-slate-500 text-xs uppercase tracking-widest mb-3 ml-2">نص الرسالة</label>
+                <textarea id="email-message" name="message" rows="8" placeholder="اكتب محتوى البريد الإلكتروني هنا..." class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-blue-500 transition outline-none" required></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white py-5 rounded-[1.5rem] font-bold text-lg hover:bg-blue-600 transition shadow-lg shadow-blue-500/20 flex items-center justify-center gap-3 group">
+                إرسال البريد الآن <i class="ph ph-envelope-open group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function applyTemplate(type, value) {
+        if (type === 'wa') {
+            document.getElementById('wa-message').value = value;
+        }
+    }
+</script>
+@endsection
+
