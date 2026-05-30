@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@php
+    $siteName = \App\Models\Setting::get('site_name', 'World Cup 4K Store');
+@endphp
+
+@section('meta_title', 'اشتراك IPTV مجاني - تجربة 4K بدون تقطيع | ' . $siteName)
+@section('meta_keywords', 'تجربة iptv مجانية, 4k iptv free trial 24 hours, افضل اشتراك iptv رخيص')
+
 @section('content')
 
 <!-- TOAST SYSTEM -->

@@ -67,6 +67,10 @@
                                     <textarea name="site_description" rows="4" class="bento-input !h-auto !py-4">{{ $settings['site_description'] ?? '' }}</textarea>
                                 </div>
                                 <div class="space-y-2">
+                                    <label class="text-xs font-black text-slate-400 uppercase tracking-widest px-1">الكلمات المفتاحية (SEO)</label>
+                                    <textarea name="site_keywords" rows="3" class="bento-input !h-auto !py-4" placeholder="مثال: اشتراك iptv, قنوات 4k...">{{ $settings['site_keywords'] ?? '' }}</textarea>
+                                </div>
+                                <div class="space-y-2">
                                     <label class="text-xs font-black text-slate-400 uppercase tracking-widest px-1">تم التطوير بواسطة (تظهر أسفل الموقع)</label>
                                     <input type="text" name="developer_info" value="{{ $settings['developer_info'] ?? '' }}" class="bento-input" placeholder="مثال: المهندس زياد">
                                 </div>

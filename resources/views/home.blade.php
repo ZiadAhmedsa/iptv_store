@@ -2,7 +2,11 @@
 
 @php
     $themeColor = \App\Models\Setting::get('theme_color', '#6366f1');
+    $siteName = \App\Models\Setting::get('site_name', 'World Cup 4K Store');
 @endphp
+
+@section('meta_title', $siteName . ' - أفضل اشتراك IPTV 4K لكأس العالم بدون تقطيع')
+@section('meta_keywords', 'اشتراك iptv, سيرفر iptv 4k, بث مباشر كاس العالم, best iptv for world cup, افضل سيرفر iptv')
 
 @section('content')
 <!-- Swiper CSS -->

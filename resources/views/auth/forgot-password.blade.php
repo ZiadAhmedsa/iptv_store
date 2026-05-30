@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@php
+    $siteName = \App\Models\Setting::get('site_name', 'World Cup 4K Store');
+@endphp
+
+@section('meta_title', 'استعادة كلمة المرور - ' . $siteName)
+
 @section('content')
 <div class="min-h-[80vh] flex items-center justify-center py-20 px-4 relative overflow-hidden">
     <!-- Decorative background glow -->

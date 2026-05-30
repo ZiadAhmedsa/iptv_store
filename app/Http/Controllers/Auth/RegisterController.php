@@ -101,19 +101,15 @@ class RegisterController extends Controller
         ]);
 
         try {
-            Mail::raw(
-                "مرحباً {$user->name}!\n\n" .
-                "شكراً لتسجيلك في INZO STORE - أفضل متجر للاشتراكات الرقمية.\n\n" .
-                "كود التحقق الخاص بك هو: {$code}\n\n" .
-                "يرجى إدخال هذا الكود لإكمال عملية التسجيل وتفعيل حسابك.\n\n" .
-                "إذا لم تقم بطلب هذا الكود، يرجى تجاهل هذا البريد.\n\n" .
-                "مع خالص التحية,\n" .
-                "فريق INZO STORE",
-                function ($mail) use ($user) {
-                    $mail->to($user->email)
-                        ->subject('كود التحقق - تفعيل حساب INZO STORE');
-                }
-            );
+            Mail::send('emails.verification', [
+                'subjectLine' => 'كود التحقق - تفعيل الحساب',
+                'userName' => $user->name,
+                'messageText' => 'شكراً لتسجيلك في World Cup 4K Store. ي     رجى استخدام الكود التالي لتفعيل حسابك.',
+                'verificationCode' => $code,
+            ], function ($mail) use ($user) {
+                $mail->to($user->email)
+                    ->subject('كود التحقق - تفعيل حساب World Cup 4K Store');
+            });
 
             return back()->with('show_register_verification', true)
                 ->with('message', 'تم إرسال كود التحقق إلى بريدك الإلكتروني. يرجى التحقق من صندوق البريد الوارد أو البريد العشوائي.')

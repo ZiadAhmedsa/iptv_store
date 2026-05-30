@@ -105,13 +105,15 @@ class LoginController extends Controller
             ]);
 
             try {
-                Mail::raw(
-                    "كود التحقق لتسجيل الدخول إلى لوحة التحكم: {$code}\n\nإذا لم تقم بطلب هذا الكود، يرجى تجاهل هذا البريد.",
-                    function ($mail) use ($user) {
-                        $mail->to($user->email)
-                             ->subject('كود التحقق - تسجيل الدخول إلى INZO STORE');
-                    }
-                );
+                Mail::send('emails.verification', [
+                    'subjectLine' => 'كود التحقق - تسجيل الدخول',
+                    'userName' => $user->name,
+                    'messageText' => 'كود التحقق الخاص بك لتسجيل الدخول إلى لوحة التحكم الإدارية.',
+                    'verificationCode' => $code,
+                ], function ($mail) use ($user) {
+                    $mail->to($user->email)
+                        ->subject('كود التحقق - تسجيل الدخول إلى World Cup 4K Store');
+                });
 
                 return back()->with('show_login_verification', true)
                     ->with('message', 'تم إرسال كود التحقق إلى بريدك الإلكتروني للأمان الإضافي.')

@@ -35,13 +35,15 @@ class ForgotPasswordController extends Controller
         ]);
 
         try {
-            Mail::raw(
-                "كود إعادة تعيين كلمة المرور في INZO STORE هو: {$code}\n\nإذا لم تكن أنت من طلب هذا الكود، يرجى تجاهل هذا البريد.",
-                function ($mail) use ($user) {
-                    $mail->to($user->email)
-                         ->subject('كود إعادة تعيين كلمة المرور');
-                }
-            );
+            Mail::send('emails.verification', [
+                'subjectLine' => 'كود إعادة تعيين كلمة المرور',
+                'userName' => $user->name,
+                'messageText' => 'لقد طلبت إعادة تعيين كلمة المرور الخاصة بحسابك. استخدم الكود التالي:',
+                'verificationCode' => $code,
+            ], function ($mail) use ($user) {
+                $mail->to($user->email)
+                     ->subject('كود إعادة تعيين كلمة المرور');
+            });
 
             return redirect()->route('password.reset')->with('info', 'تم إرسال كود إعادة التعيين إلى بريدك الإلكتروني.');
         } catch (\Exception $e) {

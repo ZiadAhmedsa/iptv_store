@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@php
+    $siteName = \App\Models\Setting::get('site_name', 'World Cup 4K Store');
+@endphp
+
+@section('meta_title', 'تواصل معنا - دعم فني 24/7 | ' . $siteName)
+@section('meta_keywords', 'دعم فني iptv, iptv customer support')
+
 @section('content')
 <div class="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12 2xl:px-24 py-24">
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-24 items-start">

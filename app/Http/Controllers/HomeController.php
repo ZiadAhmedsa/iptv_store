@@ -23,7 +23,12 @@ class HomeController extends Controller
         });
 
         $bestSellingProducts = Cache::remember('home_best_selling_products', 600, function () {
-            return Product::where('is_active', true)->withCount('orderItems')->orderByDesc('order_items_count')->take(4)->get();
+            return Product::where('is_active', true)
+                ->with(['images' => function($q) { $q->where('is_primary', true); }])
+                ->withCount('orderItems')
+                ->orderByDesc('order_items_count')
+                ->take(4)
+                ->get();
         });
 
         $banners = \App\Models\Banner::where('is_active', true)->orderBy('sort_order')->get();

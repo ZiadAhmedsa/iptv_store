@@ -3,9 +3,9 @@
 
 <head>
     @php
-        $siteName = \App\Models\Setting::get('site_name', 'INZO STORE');
-        $siteDescription = \App\Models\Setting::get('site_description', 'INZO STORE | أفضل متجر IPTV واشتراكات رقمية مع واجهة عربية احترافية.');
-        $siteKeywords = \App\Models\Setting::get('site_keywords', 'IPTV, اشتراكات, ميديا, قنوات, INZO STORE, اشتراك مجاني, دعم فني, WhatsApp');
+        $siteName = \App\Models\Setting::get('site_name', 'World Cup 4K Store');
+        $siteDescription = \App\Models\Setting::get('site_description', 'أفضل متجر اشتراكات IPTV 4K لمشاهدة كأس العالم والمباريات والأفلام بدون تقطيع. سيرفر ثابت يدعم جميع الأجهزة.');
+        $siteKeywords = \App\Models\Setting::get('site_keywords', 'اشتراك iptv, سيرفر iptv 4k, بث مباشر كاس العالم, best iptv for world cup, افضل سيرفر iptv لمشاهدة كاس العالم بدون تقطيع, world cup iptv subscription, watch world cup 4k iptv, live sports iptv server, stable iptv for world cup, iptv world cup channels 4k, تجربة iptv مجانية لكاس العالم, افضل اشتراك iptv رخيص, مقارنة سيرفرات iptv, 4k iptv server, best 4k iptv, buy iptv 4k, iptv subscription 4k, premium iptv 4k, افضل اشتراك iptv بدون تقطيع, اشتراك iptv 4k لمشاهدة المباريات, سيرفر iptv مدفوع بجودة عالية, تجديد اشتراك iptv, قنوات 4k iptv بث مباشر, best 4k iptv provider for smart tv, stable 4k iptv subscription for live sports, 4k iptv free trial 24 hours, how to setup 4k iptv on firestick, 4k iptv for Android TV, iptv 4k for Apple TV, اشتراك iptv لشاشة سامسونج, سيرفر iptv لتطبيق تيفامي سمارترز');
         $themeColor = \App\Models\Setting::get('theme_color', '#6366f1');
         $logoPath = \App\Models\Setting::get('logo_path', 'logo.svg');
 
@@ -28,9 +28,39 @@
     @endphp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $siteName }} | {{ config('app.name') }}</title>
-    <meta name="description" content="{{ $siteDescription }}" />
-    <meta name="keywords" content="{{ $siteKeywords }}" />
+
+    <!-- SEO Dynamic Meta Tags -->
+    <title>@yield('meta_title', $siteName . ' | أفضل اشتراك IPTV 4K لكأس العالم والمباريات بدون تقطيع')</title>
+    <meta name="description" content="@yield('meta_description', $siteDescription)" />
+    <meta name="keywords" content="@yield('meta_keywords', $siteKeywords)" />
+    <meta name="author" content="{{ $siteName }}" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="{{ url()->current() }}" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}" sizes="192x192">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
+    <meta name="theme-color" content="{{ $themeColor }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:title" content="@yield('meta_title', $siteName . ' | أفضل اشتراك IPTV 4K لكأس العالم')" />
+    <meta property="og:description" content="@yield('meta_description', $siteDescription)" />
+    <meta property="og:image" content="{{ asset('favicon.png') }}" />
+    <meta property="og:site_name" content="{{ $siteName }}" />
+    <meta property="og:locale" content="ar_AR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@yield('meta_title', $siteName . ' | أفضل اشتراك IPTV 4K لكأس العالم')" />
+    <meta name="twitter:description" content="@yield('meta_description', $siteDescription)" />
+    <meta name="twitter:image" content="{{ asset('favicon.png') }}" />
+
+    <!-- Hreflang -->
+    <link rel="alternate" hreflang="ar" href="{{ url()->current() }}" />
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>

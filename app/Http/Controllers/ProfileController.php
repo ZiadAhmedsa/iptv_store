@@ -56,13 +56,15 @@ class ProfileController extends Controller
         ]);
 
         try {
-            Mail::raw(
-                "كود التحقق لتغيير كلمة المرور في INZO STORE هو: {$code}\n\nإذا لم تكن أنت من طلب هذا التغيير، يرجى تجاهل هذا البريد وتأمين حسابك.",
-                function ($mail) use ($user) {
-                    $mail->to($user->email)
-                         ->subject('كود التحقق - تغيير كلمة المرور');
-                }
-            );
+            Mail::send('emails.verification', [
+                'subjectLine' => 'كود التحقق - تغيير كلمة المرور',
+                'userName' => $user->name,
+                'messageText' => 'لقد طلبت تغيير كلمة المرور الخاصة بحسابك في INZO STORE.',
+                'verificationCode' => $code,
+            ], function ($mail) use ($user) {
+                $mail->to($user->email)
+                     ->subject('كود التحقق - تغيير كلمة المرور');
+            });
 
             return redirect()->route('profile.password.verify')->with('info', 'تم إرسال كود التحقق إلى بريدك الإلكتروني.');
         } catch (\Exception $e) {

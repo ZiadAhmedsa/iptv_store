@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@php
+    $siteName = \App\Models\Setting::get('site_name', 'World Cup 4K Store');
+@endphp
+
+@section('meta_title', $product->name_ar . ' - ' . $siteName . ' | اشتراك IPTV احترافي')
+@section('meta_keywords', 'تجديد اشتراك iptv, stable iptv for world cup, اشتراك iptv 4k')
+
 @section('content')
 <div class="min-h-screen relative bg-slate-50 dark:bg-slate-950 py-20 overflow-hidden">
     <!-- Huge background glow for ultra-luxury feel -->

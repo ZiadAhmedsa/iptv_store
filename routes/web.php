@@ -24,36 +24,7 @@ use App\Http\Controllers\GuideController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
-// Frontend Routes
-Route::get('/fix-storage', function () {
-    $publicStoragePath = public_path('storage');
-    if (file_exists($publicStoragePath) || is_link($publicStoragePath)) {
-        if (PHP_OS_FAMILY === 'Windows') {
-            exec('rmdir /s /q "' . $publicStoragePath . '"');
-        } else {
-            \Illuminate\Support\Facades\File::deleteDirectory($publicStoragePath);
-        }
-        @unlink($publicStoragePath);
-    }
-    \Illuminate\Support\Facades\Artisan::call('storage:link');
-    return 'Storage link fixed successfully! Go back to <a href="/">Home</a> and refresh.';
-});
-
-Route::get('/clear-cache', function () {
-    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    \Illuminate\Support\Facades\Cache::flush();
-    return 'Cache cleared successfully! Go back to <a href="/">Home</a> and refresh.';
-});
-
-Route::get('/local-image/{type}', function($type) {
-    $path = $type === 'football' 
-        ? 'C:\Users\Zaid\.gemini\antigravity\brain\28556da1-6bc7-4a88-8552-0ceb72887cc9\premium_football_stadium_1779776332957.png'
-        : 'C:\Users\Zaid\.gemini\antigravity\brain\28556da1-6bc7-4a88-8552-0ceb72887cc9\premium_cinema_movies_1779776360987.png';
-    if(file_exists($path)) {
-        return response()->file($path);
-    }
-    abort(404);
-});
+// Utility routes moved to admin middleware for security
 
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -170,5 +141,20 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
         return redirect()->back()->with('success', 'Cache cleared successfully.');
     })->name('clear-cache');
+
+    // Storage Fix (Admin Only)
+    Route::get('/fix-storage', function () {
+        $publicStoragePath = public_path('storage');
+        if (file_exists($publicStoragePath) || is_link($publicStoragePath)) {
+            if (PHP_OS_FAMILY === 'Windows') {
+                exec('rmdir /s /q "' . $publicStoragePath . '"');
+            } else {
+                \Illuminate\Support\Facades\File::deleteDirectory($publicStoragePath);
+            }
+            @unlink($publicStoragePath);
+        }
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        return redirect()->back()->with('success', 'Storage link fixed successfully!');
+    })->name('fix-storage');
 });
 

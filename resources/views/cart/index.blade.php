@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@php
+    $siteName = \App\Models\Setting::get('site_name', 'World Cup 4K Store');
+@endphp
+
+@section('meta_title', 'سلة المشتريات - ' . $siteName)
+@section('meta_keywords', 'شراء iptv, buy iptv 4k')
+
 @section('content')
 @php
     $contactWhatsapp = \App\Models\Setting::get('contact_whatsapp', '+967 778340075');

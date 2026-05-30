@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@php
+    $siteName = \App\Models\Setting::get('site_name', 'World Cup 4K Store');
+@endphp
+
+@section('meta_title', 'طريقة تشغيل IPTV على جميع الأجهزة | ' . $siteName)
+@section('meta_keywords', 'how to setup 4k iptv on firestick, iptv لتطبيق تيفامي سمارترز, 4k iptv for Android TV, iptv 4k for Apple TV')
+
 @section('content')
 <div class="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12 2xl:px-24 py-20 relative">
     <!-- Header Section -->
